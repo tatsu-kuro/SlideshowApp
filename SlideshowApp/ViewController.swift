@@ -9,13 +9,38 @@
 import UIKit
 
 class ViewController: UIViewController {
+    var playF:Bool=false//初期停止
+ //   func setButtonsState(_ next:Bool,_ last:Bool,_ play:String)
+    func setButtonsState(_ next:Bool,_ last:Bool,_ play:Bool)//,_ playB: String)
+    {
+        nextB.isEnabled = next
+        lastB.isEnabled = last
+        if play{
+            playButton.setTitle("停止", for: UIControlState.normal)
+        }else{
+            playButton.setTitle("再生", for: UIControlState.normal)
+        }
+    }
 
+    @IBOutlet weak var nextB: UIButton!
+    @IBOutlet weak var lastB: UIButton!
     @IBOutlet weak var playButton: UIButton!
     @IBAction func playPhoto(_ sender: Any) {
+        if playF {
+            playF=false;
+            setButtonsState(true,true,playF)
+        }else{
+            playF=true;
+            setButtonsState(false,false,playF)
+        }
     }
     @IBAction func lastPhoto(_ sender: Any) {
+    
+
     }
     @IBAction func nextPhoto(_ sender: Any) {
+       
+
     }
     override func viewDidLoad() {
         super.viewDidLoad()
