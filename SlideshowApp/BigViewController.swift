@@ -9,7 +9,7 @@
 import UIKit
 
 class BigViewController: UIViewController {
-    var fileName1:String = ""
+    var fileName:String = ""
     var imageView:UIImageView!
     var scale:CGFloat = 1.0
     var width:CGFloat = 0
@@ -76,7 +76,7 @@ class BigViewController: UIViewController {
         super.viewDidLoad()
        // print(fileName1)
        //dispBigview(fileName)
-       // initImageView(fileName)
+        initImageView(fileName)
         // Do any additional setup after loading the view.
     }
 
