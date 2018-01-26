@@ -11,24 +11,31 @@ import UIKit
 class ViewController: UIViewController  {
 //    class ViewController: UIViewController,UIGestureRecognizerDelegate  {
     var fileName:String = ""
-    var fileNames=["IMG_1448.jpg","IMG_1454.jpg","IMG_1469.jpg","IMG_2461.jpg"]
+    var fileNames = [String]()
     var fileNumber = 0
-    
-
+    var fileCnt = 0
     var playF:Bool=false//初期停止
-    
-    func setButtonsState(_ next:Bool,_ last:Bool,_ play:Bool)//,_ playB: String)
-    {
-        nextB.isEnabled = next
-        lastB.isEnabled = last
-        if play{
-            playButton.setTitle("停止", for: UIControlState.normal)
-        }else{
-            playButton.setTitle("再生", for: UIControlState.normal)
-        }
-        
-     }
+    // タイマー用の時間のための変数
+    var timer_sec: Float = 0
 
+    func setFilenames(){
+       //プロジェクトに追加されたファイルを自動的に登録すべきだが、とりあえず下記の如し
+        fileNames=["IMG_1448.jpg","IMG_1454.jpg","IMG_1469.jpg","IMG_2461.jpg"]
+        fileCnt = 4
+    }
+    
+    // selector: #selector(updatetimer) で指定された関数
+    // timeInterval: 0.1, repeats: true で指定された通り、0.1秒毎に呼び出され続ける
+    @objc func updateTimer(timer: Timer) {
+        if playF {
+ //       nextPhoto(<#Any#>)
+            fileNumber += 1
+            if fileNumber > fileCnt-1{
+                fileNumber = 0
+            }
+            dispBigview(fileNames[fileNumber])
+        }
+    }
     func dispBigview(_ fn:String){
         // Screen Size の取得
         screenWidth = self.view.bounds.width
@@ -59,53 +66,35 @@ class ViewController: UIViewController  {
         self.view.addSubview(imageView)
         
     }
-    func initImageView(fn:String){
-        // UIImage インスタンスの生成
-        // 画像はAssetsに入れてないのとjpgなので拡張子を入れます
-        let image1:UIImage = UIImage(named:fn)!
-        
-        // UIImageView 初期化
-        let imageView = UIImageView(image:image1)
- //       var width = image1.size.width
- //       var height = image1.size.height
-
-        // 画面の横幅を取得
-        let screenWidth:CGFloat = view.frame.size.width
-        let screenHeight:CGFloat = view.frame.size.height
-        
-        // 画像の中心を画面の中心に設定
-        imageView.center = CGPoint(x:screenWidth/2, y:screenHeight/2)
-        
-        // UIImageViewのインスタンスをビューに追加
-        self.view.addSubview(imageView)
-        
-    }
+   
     @IBOutlet weak var nextB: UIButton!
     @IBOutlet weak var lastB: UIButton!
     @IBOutlet weak var playButton: UIButton!
     @IBAction func playPhoto(_ sender: Any) {
         if playF {
             playF=false;
-            setButtonsState(true,true,playF)
+            nextB.isEnabled = true
+            lastB.isEnabled = true
+            playButton.setTitle("再生", for: UIControlState.normal)
+            
         }else{
             playF=true;
-            setButtonsState(false,false,playF)
+            nextB.isEnabled = false
+            lastB.isEnabled = false
+            playButton.setTitle("停止", for: UIControlState.normal)
+            
         }
     }
     @IBAction func lastPhoto(_ sender: Any) {
-        if fileNumber > 1 {
-            fileNumber -= 1
-        }else{
-            fileNumber = 3
+        fileNumber -= 1
+        if fileNumber < 0 {
+            fileNumber = fileCnt-1
         }
         dispBigview(fileNames[fileNumber])
- 
-  //      dispBigview("IMG_")
     }
     @IBAction func nextPhoto(_ sender: Any) {
-        if fileNumber < 3 {
-            fileNumber += 1
-        }else{
+        fileNumber += 1
+        if fileNumber > fileCnt-1{
             fileNumber = 0
         }
         dispBigview(fileNames[fileNumber])
@@ -119,6 +108,8 @@ class ViewController: UIViewController  {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+        setFilenames()
         dispBigview(fileNames[fileNumber])
     }
 
