@@ -19,22 +19,23 @@ class ViewController: UIViewController  {
     var timer_sec: Float = 0
 
     func setFilenames(){
-       //プロジェクトに追加されたファイルを自動的に登録すべきだが、とりあえず下記の如し
-        fileNames=["IMG_1448.jpg","IMG_1454.jpg","IMG_1469.jpg","IMG_2461.jpg"]
-        fileCnt = 4
+       //プロジェクトに追加されたファイルを自動的に登録したいが、解らない
+    fileNames=["IMG_1448.jpg","IMG_1454.jpg","IMG_1469.jpg","IMG_2461.jpg"]
+        
+        for _ in fileNames {
+            fileCnt += 1
+        }
     }
     
     // selector: #selector(updatetimer) で指定された関数
     // timeInterval: 0.1, repeats: true で指定された通り、0.1秒毎に呼び出され続ける
     @objc func updateTimer(timer: Timer) {
         if playF {
- //       nextPhoto(<#Any#>)
-            fileNumber += 1
-            if fileNumber > fileCnt-1{
-                fileNumber = 0
-            }
-            dispBigview(fileNames[fileNumber])
-        }
+//          nextPhoto(Int())//ok
+//          nextPhoto(fileNumber)//ok
+//          nextPhoto(fileNumber)//ok
+            nextPhoto(!)
+      }
     }
     func dispBigview(_ fn:String){
         // Screen Size の取得
@@ -123,15 +124,14 @@ class ViewController: UIViewController  {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // segueから遷移先のResultViewControllerを取得する
         let bBigViewController:BigViewController = segue.destination as! BigViewController
-        // 遷移先のResultViewControllerで宣言しているx, yに値を代入して渡す
         bBigViewController.fileName = fileNames[fileNumber]
-            //.fx = 1
-     //   resultViewController.y = 1
     }
-    
+
     @IBAction func unwind(_ segue: UIStoryboardSegue) {
         // 他の画面から segue を使って戻ってきた時に呼ばれる
     }
-
+    /*
+    @IBAction func unwindToTop(segue: UIStoryboardSegue) {
+    }*/
 }
 
