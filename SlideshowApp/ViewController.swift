@@ -18,13 +18,12 @@ class ViewController: UIViewController  {
     // タイマー用の時間のための変数
     var timer_sec: Float = 0
 
+    @IBOutlet weak var smallView: UIImageView!
     func setFilenames(){
        //プロジェクトに追加されたファイルを自動的に登録したいが、解らない
     fileNames=["IMG_1448.jpg","IMG_1454.jpg","IMG_1469.jpg","IMG_2461.jpg"]
-        
-        for _ in fileNames {
-            fileCnt += 1
-        }
+        fileCnt = fileNames.count
+ 
     }
     
     // selector: #selector(updatetimer) で指定された関数
@@ -37,20 +36,21 @@ class ViewController: UIViewController  {
             nextPhoto(!)
       }
     }
-    func dispBigview(_ fn:String){
+    func dispSmallview(_ fn:String){
         // Screen Size の取得
         screenWidth = self.view.bounds.width
         screenHeight = self.view.bounds.height
-        
-        // UIImage インスタンスの生成
-        let image = UIImage(named:fn)!
+ //       smallView.image = fileNames[0]
+         smallView.image = #imageLiteral(resourceName: fn)
+  /*      // UIImage インスタンスの生成
+ //       let image = UIImage(named:fn)!
         
         // 画像の幅・高さの取得
-        width = image.size.width
-        height = image.size.height
+        width = (smallView.image?.size.width)!
+        height = (smallView.image?.size.height)!
         
         // UIImageView インスタンス生成
-        imageView = UIImageView(image:image)
+  //      imageView = UIImageView(image:image)
         
         // 画像サイズをスクリーン幅に合わせる
         scale = screenWidth / width
@@ -65,7 +65,7 @@ class ViewController: UIViewController  {
         
         // view に ImageView を追加する
         self.view.addSubview(imageView)
-        
+    */
     }
    
     @IBOutlet weak var nextB: UIButton!
@@ -91,14 +91,14 @@ class ViewController: UIViewController  {
         if fileNumber < 0 {
             fileNumber = fileCnt-1
         }
-        dispBigview(fileNames[fileNumber])
+        dispSmallview(fileNames[fileNumber])
     }
     @IBAction func nextPhoto(_ sender: Any) {
         fileNumber += 1
         if fileNumber > fileCnt-1{
             fileNumber = 0
         }
-        dispBigview(fileNames[fileNumber])
+        dispSmallview(fileNames[fileNumber])
     }
     var imageView:UIImageView!
     var scale:CGFloat = 1.0
@@ -110,8 +110,11 @@ class ViewController: UIViewController  {
     override func viewDidLoad() {
         super.viewDidLoad()
         Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+        
+ //       smallView.image = #imageLiteral(resourceName: "IMG_1448.jpg")
+        
         setFilenames()
-        dispBigview(fileNames[fileNumber])
+        dispSmallview(fileNames[fileNumber])
     }
 
     override func didReceiveMemoryWarning() {
