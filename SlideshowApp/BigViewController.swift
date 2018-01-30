@@ -15,7 +15,7 @@ class BigViewController: UIViewController {
   
     override func viewDidLoad() {
         super.viewDidLoad()
-        bigView.image = #imageLiteral(resourceName: fileName)
+        bigView.image = UIImage(named:fileName)
     }
 
     override func didReceiveMemoryWarning() {

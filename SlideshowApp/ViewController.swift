@@ -56,7 +56,7 @@ class ViewController: UIViewController  {
         if fileNumber < 0 {
             fileNumber = fileCnt-1
         }
-        smallView.image = #imageLiteral(resourceName: fileNames[fileNumber])
+        smallView.image = UIImage(named:fileNames[fileNumber])
      }
     
     @IBAction func nextPhoto(_ sender: Any) {
@@ -64,15 +64,14 @@ class ViewController: UIViewController  {
         if fileNumber > fileCnt-1{
             fileNumber = 0
         }
-        smallView.image = #imageLiteral(resourceName: fileNames[fileNumber])
+        smallView.image = UIImage(named:fileNames[fileNumber])
     }
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
         Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
         setFilenames()
-        smallView.image = #imageLiteral(resourceName: fileNames[fileNumber])
+        smallView.image = UIImage(named:fileNames[fileNumber])
     }
 
     override func didReceiveMemoryWarning() {
